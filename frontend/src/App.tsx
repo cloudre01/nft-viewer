@@ -10,9 +10,10 @@ import {
 import React, { useState } from "react";
 import CustomTextFieldComponent from "./components/CustomTextField";
 import NFTItem from "./components/NFTItem";
+import { useSnackbar } from "./context/SnackbarContext";
 import "./styles.css";
 import { NFT } from "./types/NFT";
-import { useSnackbar } from "./context/SnackbarContext";
+import { isValidAddress } from "./utils";
 
 const initialNfts: NFT[] = [
   {
@@ -29,6 +30,7 @@ const initialNfts: NFT[] = [
       "https://opensea.io/assets/ethereum/0x793daf78b74aadf1eda5cc07a558fed932360a60/4047",
   },
 ];
+
 const App: React.FC = () => {
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [nfts, setNfts] = useState<NFT[]>(initialNfts);
@@ -36,6 +38,11 @@ const App: React.FC = () => {
   const { showSnackbar } = useSnackbar();
 
   const fetchNFTs = async () => {
+    if (!isValidAddress(walletAddress)) {
+      showSnackbar("Invalid wallet address", "error");
+      return;
+    }
+
     try {
       const response = await fetch(`/api/nfts?address=${walletAddress}`);
       if (!response.ok) {
