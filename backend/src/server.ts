@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import { NFT } from "./types/NFT";
 import axios from "axios";
+import { isValidAddress } from "./utils";
 
 const app = express();
 const port = 3001;
@@ -11,7 +12,7 @@ app.use(express.json());
 app.get("/api/nfts", async (req, res) => {
   const { address } = req.query;
 
-  if (!address) {
+  if (!address || !isValidAddress(address as string)) {
     return res.status(400).json({
       error: "Missing required parameter 'address'",
     });
