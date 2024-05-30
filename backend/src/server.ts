@@ -17,8 +17,15 @@ app.get("/api/nfts", async (req, res) => {
     });
   }
 
-  const nfts = await fetchNFTData(address as string);
-  res.json(nfts);
+  try {
+    const nfts = await fetchNFTData(address as string);
+    res.json(nfts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Failed to fetch NFT data",
+    });
+  }
 });
 
 async function fetchNFTData(address: string) {
