@@ -4,7 +4,9 @@
   "description": "backend server for nft-viewer",
   "author": "Alex Tan",
   "scripts": {
-    "start": "ts-node src/server.ts"
+    "start": "node dist/server.js",
+    "dev": "ts-node src/server.ts",
+    "build": "tsc"
   },
   "keywords": [],
   "license": "ISC",
